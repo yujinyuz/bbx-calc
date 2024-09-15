@@ -1,0 +1,292 @@
+const parts = {
+  "blades": [
+    {
+      "name": "Aero Pegasus",
+      "points": 99
+    },
+    {
+      "name": "Black Shell",
+      "points": 1
+    },
+    {
+      "name": "Cobalt Dragoon",
+      "points": 1
+    },
+    {
+      "name": "Cobalt Drake",
+      "points": 4
+    },
+    {
+      "name": "Dran Buster",
+      "points": 3
+    },
+    {
+      "name": "Dran Dagger",
+      "points": 2
+    },
+    {
+      "name": "Dran Sword",
+      "points": 2
+    },
+    {
+      "name": "Dranzer Spiral",
+      "points": 99
+    },
+    {
+      "name": "Driger S",
+      "points": 1
+    },
+    {
+      "name": "Hells Chain",
+      "points": 3
+    },
+    {
+      "name": "Hells Hammer",
+      "points": 1
+    },
+    {
+      "name": "Hells Scythe",
+      "points": 3
+    },
+    {
+      "name": "Knight Lance",
+      "points": 2
+    },
+    {
+      "name": "Knight Shield",
+      "points": 1
+    },
+    {
+      "name": "Leon Claw",
+      "points": 1
+    },
+    {
+      "name": "Leon Crest",
+      "points": 1
+    },
+    {
+      "name": "Phoenix Feather",
+      "points": 2
+    },
+    {
+      "name": "Phoenix Rudder",
+      "points": 2
+    },
+    {
+      "name": "Phoenix Wing",
+      "points": 4
+    },
+    {
+      "name": "Rhino Horn",
+      "points": 1
+    },
+    {
+      "name": "Shark Edge",
+      "points": 3
+    },
+    {
+      "name": "Shinobi Shadow",
+      "points": 1
+    },
+    {
+      "name": "Sphinx Cowl",
+      "points": 1
+    },
+    {
+      "name": "Tyranno Beat",
+      "points": 4
+    },
+    {
+      "name": "Unicorn Sting",
+      "points": 2
+    },
+    {
+      "name": "Viper Tail",
+      "points": 2
+    },
+    {
+      "name": "Weiss Tiger",
+      "points": 3
+    },
+    {
+      "name": "Wizard Arrow",
+      "points": 2
+    },
+    {
+      "name": "Wizard Rod",
+      "points": 5
+    },
+    {
+      "name": "Wyvern Gale",
+      "points": 1
+    }
+  ],
+  "ratchets": [
+    {
+      "name": "1-60",
+      "points": 1
+    },
+    {
+      "name": "1-80",
+      "points": 1
+    },
+    {
+      "name": "2-60",
+      "points": 1
+    },
+    {
+      "name": "2-80",
+      "points": 99
+    },
+    {
+      "name": "3-60",
+      "points": 3
+    },
+    {
+      "name": "3-70",
+      "points": 2
+    },
+    {
+      "name": "3-80",
+      "points": 1
+    },
+    {
+      "name": "4-60",
+      "points": 2
+    },
+    {
+      "name": "4-70",
+      "points": 2
+    },
+    {
+      "name": "4-80",
+      "points": 1
+    },
+    {
+      "name": "5-60",
+      "points": 3
+    },
+    {
+      "name": "5-70",
+      "points": 2
+    },
+    {
+      "name": "5-80",
+      "points": 1
+    },
+    {
+      "name": "7-60",
+      "points": 3
+    },
+    {
+      "name": "9-60",
+      "points": 4
+    },
+    {
+      "name": "9-70",
+      "points": 3
+    },
+    {
+      "name": "9-80",
+      "points": 3
+    }
+  ],
+  "bits": [
+    {
+      "name": "Accel (A)",
+      "points": 1
+    },
+    {
+      "name": "Ball (B)",
+      "points": 0
+    },
+    {
+      "name": "Cyclone (C)",
+      "points": 1
+    },
+    {
+      "name": "DiscBall (DB)",
+      "points": 0
+    },
+    {
+      "name": "Dot (D)",
+      "points": 1
+    },
+    {
+      "name": "Flat (F)",
+      "points": 1
+    },
+    {
+      "name": "Gear Ball (GB)",
+      "points": 1
+    },
+    {
+      "name": "Gear Flat (GF)",
+      "points": 2
+    },
+    {
+      "name": "GearNeedle (GN)",
+      "points": 1
+    },
+    {
+      "name": "GearPoint (GP)",
+      "points": 2
+    },
+    {
+      "name": "Glide (G)",
+      "points": 0
+    },
+    {
+      "name": "Hexa (H)",
+      "points": 2
+    },
+    {
+      "name": "High Needle (HN)",
+      "points": 2
+    },
+    {
+      "name": "HighTaper (HT)",
+      "points": 3
+    },
+    {
+      "name": "LowFlat (LF)",
+      "points": 2
+    },
+    {
+      "name": "Metal Needle (MN)",
+      "points": 99
+    },
+    {
+      "name": "Needle (N)",
+      "points": 1
+    },
+    {
+      "name": "Orb (O)",
+      "points": 4
+    },
+    {
+      "name": "Point (P)",
+      "points": 2
+    },
+    {
+      "name": "Quake (Q)",
+      "points": 1
+    },
+    {
+      "name": "Rush (R)",
+      "points": 3
+    },
+    {
+      "name": "Spike (S)",
+      "points": 1
+    },
+    {
+      "name": "Taper (T)",
+      "points": 2
+    },
+    {
+      "name": "Unite (U)",
+      "points": 3
+    }
+  ]
+};

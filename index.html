@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyblade X Point Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+  <div class="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
+
+    <div class="mb-6">
+      <img src="./logo.png" />
+      <h1 class="text-2xl font-bold text-center">Beyblade X Point Calculator</h1>
+    </div>
+
+    <!-- Form to configure the tournament settings -->
+    <form id="beybladeForm" class="space-y-6">
+      <!-- Number of Beyblades -->
+      <div>
+        <label for="beybladeCount" class="block text-sm font-medium text-gray-700">Number of Beyblades</label>
+        <input type="number" id="beybladeCount" name="beybladeCount" min="1" max="10" value="3"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+      </div>
+
+      <!-- Format -->
+      <div>
+        <label for="format" class="block text-sm font-medium text-gray-700">Tournament Format</label>
+        <select id="format" name="format"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+          <option value="limited" selected>Limited (No repeating parts)</option>
+          <option value="unlimited">Unlimited (Repeating parts are okay)</option>
+        </select>
+      </div>
+
+      <!-- Maximum Points -->
+      <div>
+        <label for="maxPoints" class="block text-sm font-medium text-gray-700">Maximum Points Allowed</label>
+        <input type="number" id="maxPoints" name="maxPoints" min="1" value="17"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+      </div>
+
+      <!-- Button to proceed to building beyblades -->
+      <div class="flex justify-center">
+        <button type="button" id="buildBeyblades"
+          class="bg-indigo-500 text-white font-bold py-2 px-4 rounded hover:bg-indigo-600">
+          Build Deck
+        </button>
+      </div>
+    </form>
+
+    <!-- Section to dynamically generate Beyblade builds -->
+    <div id="beybladeBuilds" class="mt-6 hidden">
+      <h2 class="text-xl font-bold mb-4">Build Your Deck</h2>
+      <div id="beybladeBuilder" class="space-y-4">
+        <!-- Beyblade builder will be dynamically generated here -->
+      </div>
+      <div class="mt-4">
+        <span id="totalPoints" class="text-lg font-bold text-red-500">Total Points: 0 / 17</span>
+      </div>
+      <div id="beybladeSummary"></div>
+    </div>
+  </div>
+
+  <script>
+    const parts = {
+      "blades": [
+        {
+          "name": "Aero Pegasus",
+          "points": 99
+        },
+        {
+          "name": "Black Shell",
+          "points": 1
+        },
+        {
+          "name": "Cobalt Dragoon",
+          "points": 1
+        },
+        {
+          "name": "Cobalt Drake",
+          "points": 4
+        },
+        {
+          "points": 3
+        },
+        {
+          "name": "Dran Dagger",
+          "points": 2
+        },
+        {
+          "name": "Dran Sword",
+          "points": 2
+        },
+        {
+          "name": "Dranzer Spiral",
+          "points": 99
+        },
+        {
+          "name": "Driger S",
+          "points": 1
+        },
+        {
+          "name": "Hells Chain",
+          "points": 3
+        },
+        {
+          "name": "Hells Hammer",
+          "points": 1
+        },
+        {
+          "name": "Hells Scythe",
+          "points": 3
+        },
+        {
+          "name": "Knight Lance",
+          "points": 2
+        },
+        {
+          "name": "Knight Shield",
+          "points": 1
+        },
+        {
+          "name": "Leon Claw",
+          "points": 1
+        },
+        {
+          "name": "Leon Crest",
+          "points": 1
+        },
+        {
+          "name": "Phoenix Feather",
+          "points": 2
+        },
+        {
+          "name": "Phoenix Rudder",
+          "points": 2
+        },
+        {
+          "name": "Phoenix Wing",
+          "points": 4
+        },
+        {
+          "name": "Rhino Horn",
+          "points": 1
+        },
+        {
+          "name": "Shark Edge",
+          "points": 3
+        },
+        {
+          "name": "Shinobi Shadow",
+          "points": 1
+        },
+        {
+          "name": "Sphinx Cowl",
+          "points": 1
+        },
+        {
+          "name": "Tyranno Beat",
+          "points": 4
+        },
+        {
+          "name": "Unicorn Sting",
+          "points": 2
+        },
+        {
+          "name": "Viper Tail",
+          "points": 2
+        },
+        {
+          "name": "Weiss Tiger",
+          "points": 3
+        },
+        {
+          "name": "Wizard Arrow",
+          "points": 2
+        },
+        {
+          "name": "Wizard Rod",
+          "points": 5
+        },
+        {
+          "name": "Wyvern Gale",
+          "points": 1
+        }
+      ],
+      "ratchets": [
+        {
+          "name": "1-60",
+          "points": 1
+        },
+        {
+          "name": "1-80",
+          "points": 1
+        },
+        {
+          "name": "2-60",
+          "points": 1
+        },
+        {
+          "name": "2-80",
+          "points": 99
+        },
+        {
+          "name": "3-60",
+          "points": 3
+        },
+        {
+          "name": "3-70",
+          "points": 2
+        },
+        {
+          "name": "3-80",
+          "points": 1
+        },
+        {
+          "name": "4-60",
+          "points": 2
+        },
+        {
+          "name": "4-70",
+          "points": 2
+        },
+        {
+          "name": "4-80",
+          "points": 1
+        },
+        {
+          "name": "5-60",
+          "points": 3
+        },
+        {
+          "name": "5-70",
+          "points": 2
+        },
+        {
+          "name": "5-80",
+          "points": 1
+        },
+        {
+          "name": "7-60",
+          "points": 3
+        },
+        {
+          "name": "9-60",
+          "points": 4
+        },
+        {
+          "name": "9-70",
+          "points": 3
+        },
+        {
+          "name": "9-80",
+          "points": 3
+        }
+      ],
+      "bits": [
+        {
+          "name": "Accel (A)",
+          "points": 1
+        },
+        {
+          "name": "Ball (B)",
+          "points": 0
+        },
+        {
+          "name": "Cyclone (C)",
+          "points": 1
+        },
+        {
+          "name": "DiscBall (DB)",
+          "points": 0
+        },
+        {
+          "name": "Dot (D)",
+          "points": 1
+        },
+        {
+          "name": "Flat (F)",
+          "points": 1
+        },
+        {
+          "name": "Gear Ball (GB)",
+          "points": 1
+        },
+        {
+          "name": "Gear Flat (GF)",
+          "points": 2
+        },
+        {
+          "name": "GearNeedle (GN)",
+          "points": 1
+        },
+        {
+          "name": "GearPoint (GP)",
+          "points": 2
+        },
+        {
+          "name": "Glide (G)",
+          "points": 0
+        },
+        {
+          "name": "Hexa (H)",
+          "points": 2
+        },
+        {
+          "name": "High Needle (HN)",
+          "points": 2
+        },
+        {
+          "name": "HighTaper (HT)",
+          "points": 3
+        },
+        {
+          "name": "LowFlat (LF)",
+          "points": 2
+        },
+        {
+          "name": "Metal Needle (MN)",
+          "points": 99
+        },
+        {
+          "name": "Needle (N)",
+          "points": 1
+        },
+        {
+          "name": "Orb (O)",
+          "points": 4
+        },
+        {
+          "name": "Point (P)",
+          "points": 2
+        },
+        {
+          "name": "Quake (Q)",
+          "points": 1
+        },
+        {
+          "name": "Rush (R)",
+          "points": 3
+        },
+        {
+          "name": "Spike (S)",
+          "points": 1
+        },
+        {
+          "name": "Taper (T)",
+          "points": 2
+        },
+        {
+          "name": "Unite (U)",
+          "points": 3
+        }
+      ]
+    };
+
+    function updateOptions(selectedItems, options, type) {
+      const optionElements = Array.from(options);
+
+      optionElements.forEach(option => {
+        const optionName = option.value;
+
+        if (selectedItems.has(optionName)) {
+          option.disabled = true;
+          option.classList.add('bg-gray-200', 'text-gray-500');
+        } else {
+          option.disabled = false;
+          option.classList.remove('bg-gray-200', 'text-gray-500');
+        }
+      });
+    }
+
+    function calculateTotalPoints() {
+      const beyblades = document.querySelectorAll('#beybladeBuilder > div');
+      let totalPoints = 0;
+
+      beyblades.forEach(beyblade => {
+        const blade = beyblade.querySelector('.bladeSelect').selectedOptions[0];
+        const ratchet = beyblade.querySelector('.ratchetSelect').selectedOptions[0];
+        const bit = beyblade.querySelector('.bitSelect').selectedOptions[0];
+
+        if (blade && ratchet && bit) {
+          totalPoints += (parseInt(blade.dataset.points) || 0) +
+            (parseInt(ratchet.dataset.points) || 0) +
+            (parseInt(bit.dataset.points) || 0);
+        }
+      });
+
+      document.getElementById('totalPoints').textContent = `Total Points: ${totalPoints} / ${document.getElementById('maxPoints').value}`;
+    }
+
+    function updateBeybladeSummary() {
+      const beybladeSummary = document.getElementById('beybladeSummary');
+      beybladeSummary.innerHTML = ''; // Clear previous summary
+
+      const beyblades = document.querySelectorAll('#beybladeBuilder > div');
+
+      beyblades.forEach((beyblade, index) => {
+        const blade = beyblade.querySelector('.bladeSelect').selectedOptions[0];
+        const ratchet = beyblade.querySelector('.ratchetSelect').selectedOptions[0];
+        const bit = beyblade.querySelector('.bitSelect').selectedOptions[0];
+
+        if (blade && ratchet && bit) {
+          const summaryText = `${blade.textContent} ${ratchet.textContent} ${bit.textContent}`;
+          const summarySpan = document.createElement('div');
+          summarySpan.classList.add('p-2', 'bg-gray-200', 'rounded', 'mt-2');
+          summarySpan.textContent = `Beyblade ${index + 1}: ${summaryText}`;
+          beybladeSummary.appendChild(summarySpan);
+        }
+      });
+    }
+
+    function handleSelectionChange(event, type) {
+      const selectedItem = event.target.value;
+      const selectedItems = new Set();
+
+      document.querySelectorAll(`.${type}Select`).forEach(select => {
+        const value = select.value;
+        if (value) {
+          selectedItems.add(value);
+        }
+      });
+
+      if (type === 'blade') {
+        updateOptions(selectedItems, Array.from(document.querySelectorAll('.bladeSelect option')), 'blade');
+      } else if (type === 'ratchet') {
+        updateOptions(selectedItems, Array.from(document.querySelectorAll('.ratchetSelect option')), 'ratchet');
+      } else if (type === 'bit') {
+        updateOptions(selectedItems, Array.from(document.querySelectorAll('.bitSelect option')), 'bit');
+      }
+    }
+
+    document.getElementById('buildBeyblades').addEventListener('click', function () {
+      const beybladeCount = document.getElementById('beybladeCount').value;
+      const maxPoints = document.getElementById('maxPoints').value;
+      const format = document.getElementById('format').value;
+      const beybladeBuilder = document.getElementById('beybladeBuilder');
+
+      // Show the beyblade builds section
+      document.getElementById('beybladeBuilds').classList.remove('hidden');
+
+      // Clear any previous beyblade builds
+      beybladeBuilder.innerHTML = '';
+
+      // Arrays to track selected parts
+      const selectedBlades = new Set();
+      const selectedRatchets = new Set();
+      const selectedBits = new Set();
+
+      // Generate beyblade forms based on the number of beyblades
+      for (let i = 0; i < beybladeCount; i++) {
+        const beybladeDiv = document.createElement('div');
+        beybladeDiv.classList.add('p-4', 'bg-gray-100', 'rounded', 'shadow-sm');
+
+        beybladeDiv.innerHTML = `
+          <h3 class="font-bold text-lg">Beyblade ${i + 1}</h3>
+
+          <div class="mt-2">
+            <label class="block text-sm font-medium text-gray-700">Choose Blade</label>
+            <select class="bladeSelect mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+              <option value="" disabled selected>Select a blade</option>
+              ${parts.blades.map(blade => `
+                <option value="${blade.name}" data-points="${blade.points}" data-image="${blade.image}">
+                  ${blade.name} ${blade.points}
+                </option>
+              `).join('')}
+            </select>
+          </div>
+
+          <div class="mt-2">
+            <label class="block text-sm font-medium text-gray-700">Choose Ratchet</label>
+            <select class="ratchetSelect mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+              <option value="" disabled selected>Select a ratchet</option>
+              ${parts.ratchets.map(ratchet => `
+                <option value="${ratchet.name}" data-points="${ratchet.points}" data-image="${ratchet.image}">
+                  ${ratchet.name} ${ratchet.points}
+                </option>
+              `).join('')}
+            </select>
+          </div>
+
+          <div class="mt-2">
+            <label class="block text-sm font-medium text-gray-700">Choose Bit</label>
+            <select class="bitSelect mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+              <option value="" disabled selected>Select a bit</option>
+              ${parts.bits.map(bit => `
+                <option value="${bit.name}" data-points="${bit.points}" data-image="${bit.image}">
+                  ${bit.name} ${bit.points}
+                </option>
+              `).join('')}
+            </select>
+          </div>
+        `;
+
+        beybladeBuilder.appendChild(beybladeDiv);
+
+        // Event listeners to update points dynamically
+        beybladeDiv.querySelector('.bladeSelect').addEventListener('change', function (event) {
+          handleSelectionChange(event, 'blade');
+          calculateTotalPoints();
+          updateBeybladeSummary();
+        });
+
+        beybladeDiv.querySelector('.ratchetSelect').addEventListener('change', function (event) {
+          handleSelectionChange(event, 'ratchet');
+          calculateTotalPoints();
+          updateBeybladeSummary();
+        });
+
+        beybladeDiv.querySelector('.bitSelect').addEventListener('change', function (event) {
+          handleSelectionChange(event, 'bit');
+          calculateTotalPoints();
+          updateBeybladeSummary();
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
